@@ -1,0 +1,16 @@
+html,
+body {
+	font-family: "Comic Sans MS", "Comic Sans", cursive;
+}
+
+.bg-dark {
+	background-color: black !important;
+}
+
+.bg-secondary {
+	background-color: rgb(35, 35, 35) !important;
+}
+
+.bi-triangle-fill::before {
+	transform: rotate(90deg);
+}

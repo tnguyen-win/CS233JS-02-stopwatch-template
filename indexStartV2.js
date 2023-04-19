@@ -1,28 +1,73 @@
-// Create a class called StopWatch.
-{
-    /*
-        Add a constructor.  In the body of the constructor
-        -   Create instance variables for the 3 global 3 variables as well
-            as all of the elements on the page that you're going to
-            refer to in code
-        -   All of the functionality of init will happen in the constructor.
-        -   Add the event handlers for the start, stop and reset buttons.
-            You'll have to bind(this) to each function because the keyword
-            this will refer to the button (not the class) when the 
-            event fires
-            -- this.startButton.onclick = this.startTimer.bind(this);
-    */
+/* jshint esversion: 6 */
 
-    /*
-        Convert each function to a method.  
-        -   Move it inside the class.
-        -   Remove the keyword function
-        -   Add this. in front of every variable and method
-    */
+class StopWatch {
+	constructor() {
+		this.isRunning = false;
+		this.elapsedTime = 0;
+		this.timer = null;
+
+		const eStart = document.getElementById("start");
+		const eStop = document.getElementById("stop");
+		const eReset = document.getElementById("reset");
+
+		eStart.onclick = this.startTimer.bind(this);
+		eStop.onclick = this.stopTimer.bind(this);
+		eReset.onclick = this.resetTimer.bind(this);
+
+		this.startTimer = this.startTimer.bind(this);
+		this.incrementTimer = this.incrementTimer.bind(this);
+		this.pad = this.pad.bind(this);
+		this.stopTimer = this.stopTimer.bind(this);
+		this.resetTimer = this.resetTimer.bind(this);
+		this.setTimer = this.setTimer.bind(this);
+	}
+
+	startTimer() {
+		if (this.isRunning === false) {
+			this.isRunning = true;
+			this.timer = setInterval(this.incrementTimer, 1000);
+		}
+	}
+
+	incrementTimer() {
+		this.elapsedTime++;
+
+		let minutes = parseInt(this.elapsedTime / 60);
+		let seconds = this.elapsedTime % 60;
+
+		this.setTimer(this.pad(minutes), this.pad(seconds));
+	}
+
+	pad(number) {
+		if (number < 10) number = `0${number}`;
+
+		return number;
+	}
+
+	stopTimer() {
+		if (this.isRunning) {
+			this.isRunning = false;
+			clearInterval(this.timer);
+		}
+	}
+
+	resetTimer() {
+		this.stopTimer();
+
+		this.elapsedTime = 0;
+
+		this.setTimer("00", "00");
+	}
+
+	setTimer(s1, s2) {
+		const eMinutes = document.getElementById("minutes");
+		const eSeconds = document.getElementById("seconds");
+
+		eMinutes.innerText = s1;
+		eSeconds.innerText = s2;
+	}
 }
 
-// create a variable called stopWatch
+var stopWatch;
 
-// Add an event handler to the load event of the window. 
-// Use an anonymous function or an arrow function to
-// set the stopWatch variable to an instance of StopWatch
+window.onload = () => { stopWatch = new StopWatch(); };
